@@ -9,13 +9,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.immo.immo.model.Property;
+import com.immo.immo.service.OwnerService;
 import com.immo.immo.service.PropertyService;
+import com.immo.immo.service.PropertyTypeService;
 
 @Controller
 @RequestMapping("/property")
 public class PropertyController {
      @Autowired
     private PropertyService propertyService;
+
+    @Autowired
+    private PropertyTypeService propertyTypeService;
+
+    @Autowired
+    private OwnerService ownerService;
 
     @GetMapping("/list")
     public String list(Model model) {
@@ -24,7 +32,9 @@ public class PropertyController {
     }
 
     @GetMapping("/add")
-    public String displayAddForm(Property property) {
+    public String displayAddForm(Property property, Model model) {
+        model.addAttribute("propertyTypes", propertyTypeService.getAll());
+        model.addAttribute("owners", ownerService.getAll());
         return "property/add";
     }
 
@@ -37,6 +47,8 @@ public class PropertyController {
     @GetMapping("/update/{id}")
     public String displayUpdateForm(@PathVariable("id") String id, Model model) {
         Property property = propertyService.findById(id);
+        model.addAttribute("propertyTypes", propertyTypeService.getAll());
+        model.addAttribute("owners", ownerService.getAll());
         model.addAttribute("property", property);
         return "property/update";
     }

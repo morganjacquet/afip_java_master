@@ -14,8 +14,8 @@
               <tr>
                 <th>Id Propriété</th>
                 <th>Adresse</th>
-                <th>Type ID</th>
-                <th>Propriétaire ID</th>
+                <th>Type</th>
+                <th>Propriétaire</th>
                 <th>Date de Vente</th>
                 <th>Prix de Vente</th>
                 <th>Actions</th>
@@ -25,9 +25,12 @@
               <tr th:each="property : ${properties}">
                 <td style="width: 10%" th:text="${property.propertyId}"></td>
                 <td th:text="${property.address}"></td>
-                <td th:text="${property.typeId}"></td>
-                <td th:text="${property.ownerId}"></td>
-                <td th:text="${property.saleDate}"></td>
+                <td th:text="${property.propertyType?.name}"></td>
+                <td>
+                  <span th:text="${property.owner?.firstname}"></span>
+                  <span th:text="${property.owner?.lastname}"></span> 
+                </td>
+                <td th:text="${#dates.format(property.saleDate, 'dd/MM/yyyy')}"></td>
                 <td th:text="${property.salePrice}"></td>
                 <td>
                   <a th:href="@{/property/update/{propertyId}(propertyId=${property.propertyId})}"
